@@ -50,3 +50,25 @@ def test_unregister_rejects_missing_student(monkeypatch):
     )
 
     assert response.status_code == 404
+
+
+def test_signup_is_visible_in_follow_up_activity_request(monkeypatch):
+    activity_name = "Test Activity"
+    activity = {
+        "description": "Test",
+        "schedule": "Now",
+        "max_participants": 10,
+        "participants": [],
+    }
+    monkeypatch.setitem(activities, activity_name, activity)
+    client = TestClient(app)
+
+    signup_response = client.post(
+        f"/activities/{activity_name}/signup",
+        params={"email": "student@mergington.edu"},
+    )
+    activities_response = client.get("/activities")
+
+    assert signup_response.status_code == 200
+    assert activities_response.status_code == 200
+    assert "student@mergington.edu" in activities_response.json()[activity_name]["participants"]
