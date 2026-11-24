@@ -1,0 +1,20 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Commit staged changes",
+      "type": "process",
+      "command": "git",
+      "args": ["commit", "-m", "${input:commitMessage}"],
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "commitMessage",
+      "type": "promptString",
+      "description": "Commit message",
+      "default": "Describe your changes"
+    }
+  ]
+}
